@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-xs-12">
+        <button (click)="onEditRecipe()" class="btn btn-success">New Recipe</button>
+        <!-- <button routerLink="new" class="btn btn-success">New Recipe</button> -->
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-xs-12">
+        <!-- Method 1 -->
+       <app-recipe-item  
+       *ngFor="let recipeEl of recipes ; let i = index" 
+       [recipe]="recipeEl"
+       (recipeSelected)="onRecipeSelected(recipeEl)"
+       [index]="i"
+       ></app-recipe-item>
+       <!-- Method 2 -->
+       <!-- <app-recipe-item [recipes]="recipes"></app-recipe-item> -->
+    </div>
+</div>  

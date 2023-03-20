@@ -1,0 +1,28 @@
+<!-- => method 1 for routing alternative -->
+<div class="listView">
+<a 
+    [routerLink]="[index]"
+    routerLinkActive="active"
+    style="cursor:pointer" 
+    class="list-group-item clearfix">
+    <div class="pull-left">
+        <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+        <p class="list-group-item-text">{{recipe.description}}</p>
+    </div>
+    <span class="pull-right">
+        <img src="{{recipe.imagePath}}" alt="{{recipe.name}}" class="img-responsive" style="max-height: 50px;">
+    </span>
+</a>
+</div>
+
+<!-- => method 2 for routing alternative -->
+<!-- 
+<a href="#" class="list-group-item clearfix" *ngFor="let recipe of recipes">
+    <div class="pull-left">
+        <h4 class="list-group-item-heading">{{recipe.name}}</h4>
+        <p class="list-group-item-text">{{recipe.description}}</p>
+    </div>
+    <span class="pull-right">
+        <img src="{{recipe.imagePath}}" alt="{{recipe.name}}" class="img-responsive" style="max-height: 50px;">
+    </span>
+</a> -->

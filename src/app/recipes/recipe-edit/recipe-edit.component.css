@@ -1,0 +1,21 @@
+.btn{
+    margin-right: 0.5rem;
+}
+
+iframe{
+    border: none;
+    
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched{
+    border: 1px solid red;
+}
+
+.fitImage{
+
+        width: 200px;
+        height: 300px;
+        object-fit: contain;
+
+}
