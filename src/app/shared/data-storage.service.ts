@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
-import { Subscription, map ,tap } from 'rxjs';
+import { Subscription, exhaustMap, map, take, tap } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class DataStorageService implements OnDestroy {
   subFetchData: Subscription;
 
   constructor(private http: HttpClient,
-    private recipeService: RecipeService) { }
+    private recipeService: RecipeService,
+    private authRecipe: AuthService) { }
 
   storeRecipes() {
     const recipe = this.recipeService.getRecipes();
@@ -23,21 +25,27 @@ export class DataStorageService implements OnDestroy {
   }
 
   fetchData() {
-    return this.http.get<Recipe[]>('https://ng-course-recipe-book-c4cfa-default-rtdb.firebaseio.com/recipe.json')
-      .pipe(
-        map(recipes => {
-          return recipes.map(recipe => {
-            return {
-              ...recipe,
-              ingredients: recipe.ingredients ? recipe.ingredients : []
-            };
-          });
-        }),
-        tap(recipes => {
+    return this.authRecipe.user.pipe(take(1),
+      exhaustMap(user => {
+        return this.http.get<Recipe[]>('https://ng-course-recipe-book-c4cfa-default-rtdb.firebaseio.com/recipe.json',
+        {
+          params: new HttpParams().set('auth',user.token)
+        }
+        );
 
-          this.recipeService.setRecipes(recipes);
-        })
-      )
+      }),
+      map(recipes => {
+        return recipes.map(recipe => {
+          return {
+            ...recipe,
+            ingredients: recipe.ingredients ? recipe.ingredients : []
+          };
+        });
+      }),
+      tap(recipes => {
+        this.recipeService.setRecipes(recipes);
+      })
+    )
   }
 
   ngOnDestroy(): void {
