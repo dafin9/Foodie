@@ -25,15 +25,7 @@ export class DataStorageService implements OnDestroy {
   }
 
   fetchData() {
-    return this.authRecipe.user.pipe(take(1),
-      exhaustMap(user => {
-        return this.http.get<Recipe[]>('https://ng-course-recipe-book-c4cfa-default-rtdb.firebaseio.com/recipe.json',
-        {
-          params: new HttpParams().set('auth',user.token)
-        }
-        );
-
-      }),
+    return this.http.get<Recipe[]>('https://ng-course-recipe-book-c4cfa-default-rtdb.firebaseio.com/recipe.json').pipe(
       map(recipes => {
         return recipes.map(recipe => {
           return {
